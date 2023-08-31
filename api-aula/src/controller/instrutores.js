@@ -1,4 +1,5 @@
 const { instrutores } = require("../bd");
+let { identificadorInstrutor } = require("../bd");
 
 const listarInstrutores = (req, res) => {
   return res.json(instrutores);
@@ -16,21 +17,33 @@ const encontraInstrutor = (req, res) => {
 };
 
 const cadastraInstrutor = (req, res) => {
-  const { id, nome, email, status } = req.params;
+  const { nome, email, status } = req.body;
 
-  instrutores.push({
-    id: id,
-    nome: nome,
-    email: email,
-    status: status,
-  });
+  if (!nome) {
+    return res
+      .status(400)
+      .json({ mensagem: "O campo nome precisa ser preenchido." });
+  }
 
-  res.json(listarInstrutores());
+  if (!email) {
+    return res
+      .status(400)
+      .json({ mensagem: "O campo e-mail precisa ser preenchido." });
+  }
+
+  const instrutor = {
+    id: identificadorInstrutor++,
+    nome,
+    email,
+    status: status ?? true
+  };
+
+  instrutores.push(instrutor);
+
+  return res.status(201).json(instrutor);
 };
 module.exports = {
   listarInstrutores,
   encontraInstrutor,
   cadastraInstrutor,
 };
-
-console.log();

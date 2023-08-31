@@ -74,12 +74,37 @@ const atualizaInstrutor = (req, res) => {
   instrutor.email = email;
   instrutor.status = status;
 
-  res.status(203).json({ mensagem: "Alteração feita com sucesso!" });
+  res.status(204).json({ mensagem: "Alteração feita com sucesso!" });
 };
 
+const atualizaCampoInstrutor = (req, res) => {
+  const { nome, email, status } = req.body;
+  const { id } = req.params;
+
+  const instrutor = instrutores.find((instrutor) => instrutor.id == id);
+
+  if (!instrutor) {
+    return res.status(404).json({ mensagem: "instrutor não encontrado" });
+  }
+
+  if (nome) {
+    instrutor.nome = nome;
+  }
+
+  if (email) {
+    instrutor.email = email;
+  }
+
+  if (status != undefined) {
+    instrutor.status = status;
+  }
+
+  res.status(204).send("Campo(s) atualizado(s) com sucesso.");
+};
 module.exports = {
   listarInstrutores,
   encontraInstrutor,
   cadastraInstrutor,
   atualizaInstrutor,
+  atualizaCampoInstrutor,
 };

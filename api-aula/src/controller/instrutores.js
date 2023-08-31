@@ -1,4 +1,5 @@
 const { instrutores } = require("../bd");
+
 let { identificadorInstrutor } = require("../bd");
 
 const listarInstrutores = (req, res) => {
@@ -101,10 +102,26 @@ const atualizaCampoInstrutor = (req, res) => {
 
   res.status(204).send("Campo(s) atualizado(s) com sucesso.");
 };
+
+const deletaInstrutor = (req, res) => {
+  const { id } = req.params;
+
+  const indiceToRemove = instrutores.findIndex(
+    (instrutor) => instrutor.id == id
+  );
+
+  if (indiceToRemove == -1) {
+    return res.status(404).json({ mensagem: "instrutor não encontrado!" });
+  }
+
+  instrutores.splice(indiceToRemove, 1);
+  return res.status(204).send("Deletado");
+};
 module.exports = {
   listarInstrutores,
   encontraInstrutor,
   cadastraInstrutor,
   atualizaInstrutor,
   atualizaCampoInstrutor,
+  deletaInstrutor,
 };

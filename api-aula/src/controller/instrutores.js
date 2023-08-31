@@ -35,15 +35,51 @@ const cadastraInstrutor = (req, res) => {
     id: identificadorInstrutor++,
     nome,
     email,
-    status: status ?? true
+    status: status ?? true,
   };
 
   instrutores.push(instrutor);
 
   return res.status(201).json(instrutor);
 };
+
+const atualizaInstrutor = (req, res) => {
+  const { nome, email, status } = req.body;
+  const { id } = req.params;
+
+  if (!nome) {
+    return res
+      .status(400)
+      .json({ mensagem: "O campo nome precisa ser preenchido." });
+  }
+
+  if (!email) {
+    return res
+      .status(400)
+      .json({ mensagem: "O campo e-mail precisa ser preenchido." });
+  }
+
+  if (!status) {
+    return res
+      .status(400)
+      .json({ mensagem: "O campo status precisa ser preenchido." });
+  }
+  const instrutor = instrutores.find((instrutor) => instrutor.id == id);
+
+  if (!instrutor) {
+    return res.status(404).json({ mensagem: "instrutor não encontrado" });
+  }
+
+  instrutor.nome = nome;
+  instrutor.email = email;
+  instrutor.status = status;
+
+  res.status(203).json({ mensagem: "Alteração feita com sucesso!" });
+};
+
 module.exports = {
   listarInstrutores,
   encontraInstrutor,
   cadastraInstrutor,
+  atualizaInstrutor,
 };

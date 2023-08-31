@@ -59,7 +59,7 @@ const atualizaInstrutor = (req, res) => {
       .json({ mensagem: "O campo e-mail precisa ser preenchido." });
   }
 
-  if (!status) {
+  if (status == undefined) {
     return res
       .status(400)
       .json({ mensagem: "O campo status precisa ser preenchido." });

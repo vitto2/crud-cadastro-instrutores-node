@@ -106,11 +106,9 @@ const atualizaCampoInstrutor = (req, res) => {
 const deletaInstrutor = (req, res) => {
   const { id } = req.params;
 
-  const indiceToRemove = instrutores.findIndex(
-    (instrutor) => instrutor.id == id
-  );
+  const indiceToRemove = instrutores.find((instrutor) => instrutor.id == id);
 
-  if (indiceToRemove == -1) {
+  if (!indiceToRemove) {
     return res.status(404).json({ mensagem: "instrutor não encontrado!" });
   }
 
